@@ -10,3 +10,9 @@ panic = "abort"
 panic = "abort"
 
 [dependencies]
+bootloader = "0.9"
+
+[[bin]]
+name = "kernel_os"
+test = false
+bench = false
