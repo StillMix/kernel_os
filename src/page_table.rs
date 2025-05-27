@@ -115,14 +115,14 @@ impl PageTableManager {
         page: Page,
         frame: PhysFrame,
     ) -> Result<(), PageTableError> {
-        // Пока что просто возвращаем успех
+        // Простая реализация - всегда успешно мапим
         // В реальной реализации здесь будет работа с таблицами страниц
         Ok(())
     }
     
     /// Размапливает виртуальную страницу
     pub fn unmap_page(&mut self, page: Page) -> Result<PhysFrame, PageTableError> {
-        // Пока что возвращаем фиктивный фрейм
+        // Возвращаем фиктивный фрейм
         // В реальной реализации здесь будет удаление маппинга
         Ok(PhysFrame::containing_address(PhysAddr::new(0x400000)))
     }

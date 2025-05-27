@@ -4,7 +4,7 @@
 use core::panic::PanicInfo;
 
 // Подключаем модуль для работы с таблицами страниц
-mod page_table;
+//mod page_table;
 
 /// Обработчик паники - вызывается когда программа паникует
 #[panic_handler]
