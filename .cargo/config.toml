@@ -2,5 +2,4 @@
 target = "x86_64-unknown-none"
 
 [target.x86_64-unknown-none]
-runner = ["qemu-system-x86_64", "-machine", "q35", "-cpu", "qemu64", "-kernel"]
 rustflags = ["-C", "link-arg=-T./linker.ld"]
