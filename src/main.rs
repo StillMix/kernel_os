@@ -3,6 +3,9 @@
 
 use core::panic::PanicInfo;
 
+// Подключаем модуль для работы с таблицами страниц
+mod page_table;
+
 /// Обработчик паники - вызывается когда программа паникует
 #[panic_handler]
 fn panic(_info: &PanicInfo) -> ! {
@@ -10,7 +13,7 @@ fn panic(_info: &PanicInfo) -> ! {
 }
 
 /// Точка входа - с нее начинается выполнение нашего ядра
-#[unsafe(no_mangle)]
+#[no_mangle]
 pub extern "C" fn _start() -> ! {
     // Указатель на буфер видеопамяти (текстовый режим VGA)
     let vga_buffer = 0xb8000 as *mut u8;
