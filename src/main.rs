@@ -3,34 +3,26 @@
 
 use core::panic::PanicInfo;
 
-// Подключаем модуль для работы с таблицами страниц
-//mod page_table;
+/// Точка входа. Обозначается `no_mangle`, чтобы компилятор не менял имя функции.
+#[no_mangle]
+pub extern "C" fn _start() -> ! {
+    let vga_buffer = 0xb8000 as *mut u8;
 
-/// Обработчик паники - вызывается когда программа паникует
-#[panic_handler]
-fn panic(_info: &PanicInfo) -> ! {
+    // Печатаем слово "Привет" в VGA-буфер по байтам.
+    let hello = b"Privet"; // Пишем латиницей для совместимости
+    for (i, &byte) in hello.iter().enumerate() {
+        unsafe {
+            // VGA-память: каждый символ состоит из 2 байт — сам символ и цвет
+            *vga_buffer.offset((i * 2) as isize) = byte;
+            *vga_buffer.offset((i * 2 + 1) as isize) = 0x0f; // белый текст на черном фоне
+        }
+    }
+
     loop {}
 }
 
-/// Точка входа - с нее начинается выполнение нашего ядра
-#[no_mangle]
-pub extern "C" fn _start() -> ! {
-    // Указатель на буфер видеопамяти (текстовый режим VGA)
-    let vga_buffer = 0xb8000 as *mut u8;
-    
-    // Пишем букву 'H' белым цветом на черном фоне
-    unsafe {
-        *vga_buffer.offset(0) = b'H';          // символ
-        *vga_buffer.offset(1) = 0x0f;          // цвет (белый на черном)
-        *vga_buffer.offset(2) = b'e';          // символ
-        *vga_buffer.offset(3) = 0x0f;          // цвет
-        *vga_buffer.offset(4) = b'l';          // символ
-        *vga_buffer.offset(5) = 0x0f;          // цвет
-        *vga_buffer.offset(6) = b'l';          // символ
-        *vga_buffer.offset(7) = 0x0f;          // цвет
-        *vga_buffer.offset(8) = b'o';          // символ
-        *vga_buffer.offset(9) = 0x0f;          // цвет
-    }
-    
+/// Хук на случай паники. Обязателен в no_std.
+#[panic_handler]
+fn panic(_info: &PanicInfo) -> ! {
     loop {}
 }
